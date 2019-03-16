@@ -2,7 +2,6 @@
 
 import csv
 import doctest
-import locale
 import sys
 import os
 
@@ -22,7 +21,8 @@ def to_supa_amount(number):
     >>> to_supa_amount("41,04")
     41.04
     """
-    return abs(locale.atof(number.replace(".", "")))
+    n = number.replace(".", "").replace(",", ".")
+    return abs(float(n))
 
 
 def create_debit_credit_indicator(number):
@@ -73,13 +73,6 @@ def map_supa_row(row, mapping):
 
 
 def main():
-    locale.setlocale(locale.LC_NUMERIC, "de_DE.UTF-8")
-
-    test_mode = "TEST" in os.environ
-    if test_mode:
-        doctest.testmod()
-        return 0
-
     supa_columns = [c["supaName"] for c in RABO_TO_SUPA_MAPPING]
     writer = csv.DictWriter(sys.stdout, supa_columns, dialect=csv.excel_tab)
     with open(sys.argv[1], newline="", encoding="utf-8-sig") as rabo_file:
