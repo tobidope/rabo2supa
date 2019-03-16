@@ -6,7 +6,7 @@ SUPA := $(patsubst %.csv,%.supa,$(CSV))
 all: $(SUPA)
 
 test:
-	TEST=true ./rabo2supa.py
+	pytest
 
 clean:
 	rm $(SUPA) $(CSV)
